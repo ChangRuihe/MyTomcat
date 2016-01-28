@@ -22,6 +22,7 @@
 #忽略subDir/target/目录下所有文件
 #因为maven工程有parent和children之分
 **/target/
+target/
 
 #忽略日志文件
 #日志文件也可能是*.tar.gz或*.tar压缩处理过的
