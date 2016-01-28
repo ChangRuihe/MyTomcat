@@ -6,7 +6,6 @@
  */
 package com.chang.http.bootstrap;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -15,6 +14,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import com.chang.http.Request;
 import com.chang.http.Response;
+import com.chang.http.processer.ServletProcessorYoung;
 
 /**
  * @author 13097
@@ -22,10 +22,6 @@ import com.chang.http.Response;
  */
 public class HTTPServer {
 
-    public static final String WEB_ROOT = System.getProperty("user.dir") + File.separator + "webroot";
-    {
-        System.out.println("user.dir:" + WEB_ROOT);
-    }
     private static final String SHUTDOWN_COMMAND = "/SHUTDOWN";
 
     // the shutdow command received
@@ -44,8 +40,8 @@ public class HTTPServer {
             serverSocket = new ServerSocket(port, 1, InetAddress.getByName("127.0.0.1"));
             System.out.println("Server Start !!!");
         } catch (IOException e) {
+            System.out.println("监听服务出错！！！\n" + e.toString());
             System.exit(1);
-            System.out.println("监听服务出错！！！");
         }
         // Looop waiting for a request
         while (!shutdown) {
@@ -65,17 +61,24 @@ public class HTTPServer {
 
                 Response response = new Response(output);
                 response.setRequset(requset);
-                response.sendStaticResouce();
-                // Close the socket
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+
+                // check uri 判断它的请求资源类型 调用不同的处理器处理
+                // a static resource
+                // a request for a servlet begins with ("/servlet/")
+
+                // dynamic
+                String uri = requset.getUri();
+                if (uri == null || uri == "") {
+                    System.out.println("uri is empty");
+                } else if (requset.getUri() != null && uri.startsWith("/servlet/")) {
+                    ServletProcessorYoung processor = new ServletProcessorYoung();
+                    processor.process(requset, response);
+                } else {
+                    // static
+                    response.sendStaticResouce();
                 }
-
+                // Close the socket
                 socket.close();
-
                 // check if the previous URI is a shutdown command
                 if (requset.getUri() != null) {
                     shutdown = requset.getUri().equals(SHUTDOWN_COMMAND);
