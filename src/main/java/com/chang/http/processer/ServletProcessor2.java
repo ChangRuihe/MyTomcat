@@ -17,15 +17,14 @@ import javax.servlet.ServletResponse;
 import com.chang.http.Request;
 import com.chang.http.Response;
 import com.chang.http.constant.Constants;
+import com.chang.http.ioenty.RequestFace;
 
-/**
- * @author 13097
- * @since 2016年1月28日
- */
-public class ServletProcessorYoung {
+public class ServletProcessor2 {
 
     public void process(Request requset, Response response) {
-        System.out.println("ServletProcessorYoung__process  is starting !!!");
+        Servlet servlet = null;
+        RequestFace requestFace = new RequestFace(requset);
+
         String uri = requset.getUri();
         String servlerName = "com.chang.http.servlet." + uri.substring(uri.lastIndexOf("/") + 1);
         URLClassLoader loader = null;
@@ -59,15 +58,14 @@ public class ServletProcessorYoung {
                 System.out.print("class not found send error file is wrong !!" + e1.toString());
             }
         }
-        Servlet servlet = null;
+        // Servlet servlet = null;
         try {
             servlet = (Servlet) myClass.newInstance();
-            servlet.service((ServletRequest) requset, (ServletResponse) response);
+            servlet.service((ServletRequest) requestFace, (ServletResponse) response);
         } catch (Exception e) {
             System.out.println(e.toString());
         } catch (Throwable e) {
             System.out.println(e.toString());
         }
-
     }
 }

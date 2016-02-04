@@ -14,7 +14,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import com.chang.http.Request;
 import com.chang.http.Response;
-import com.chang.http.processer.ServletProcessorYoung;
+import com.chang.http.processer.ServletProcessor2;
 
 /**
  * @author 13097
@@ -36,7 +36,6 @@ public class HTTPServer {
         ServerSocket serverSocket = null;
         int port = 8080;
         try {
-
             serverSocket = new ServerSocket(port, 1, InetAddress.getByName("127.0.0.1"));
             System.out.println("Server Start !!!");
         } catch (IOException e) {
@@ -69,9 +68,9 @@ public class HTTPServer {
                 // dynamic
                 String uri = requset.getUri();
                 if (uri == null || uri == "") {
-                    System.out.println("uri is empty");
+                    System.out.println("uri is empty and request MSG :" + requset.returnRequestMSG());
                 } else if (requset.getUri() != null && uri.startsWith("/servlet/")) {
-                    ServletProcessorYoung processor = new ServletProcessorYoung();
+                    ServletProcessor2 processor = new ServletProcessor2();
                     processor.process(requset, response);
                 } else {
                     // static

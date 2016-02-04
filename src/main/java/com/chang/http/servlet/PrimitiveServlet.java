@@ -22,8 +22,6 @@ public class PrimitiveServlet implements Servlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -34,7 +32,7 @@ public class PrimitiveServlet implements Servlet {
     @Override
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
         PrintWriter out = res.getWriter();
-        out.println("HelloWorld");
+        out.println("<body><h1>Hello    World</h1><img src=\"/44_avatar_middle.jpg\" height=\"450px\" width=\"500\"></body>");
     }
 
     @Override
