@@ -73,6 +73,7 @@ public class HttpProcessor implements Lifecycle, Runnable {
 
             if (request.getUri() != null) {
                 shutdown = request.getUri().equals(SHUTDOWN_COMMAND);
+                
             }
 
         } catch (Exception e) {

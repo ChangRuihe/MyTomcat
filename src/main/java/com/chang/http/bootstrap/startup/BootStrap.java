@@ -16,6 +16,7 @@ public class BootStrap {
 
     public static void main(String[] args) {
         HttpConnector connector = new HttpConnector();
+        // connector.setContainer(null);
         connector.start();
     }
 }
